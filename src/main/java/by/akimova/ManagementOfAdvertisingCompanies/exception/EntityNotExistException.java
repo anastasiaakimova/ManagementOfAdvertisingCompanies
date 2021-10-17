@@ -1,7 +1,13 @@
 package by.akimova.ManagementOfAdvertisingCompanies.exception;
 
-public class NullEntityException extends Exception{
-    public NullEntityException(String message) {
+/**
+ * This is exception class for catching not existing entity.
+ *
+ * @author anastasiyaakimava
+ * @version 1.0
+ */
+public class EntityNotExistException extends Exception{
+    public EntityNotExistException(String message) {
         super(message);
     }
 }
