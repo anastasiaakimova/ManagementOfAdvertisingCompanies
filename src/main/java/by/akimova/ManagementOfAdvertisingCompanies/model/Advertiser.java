@@ -24,7 +24,6 @@ public class Advertiser {
     private String description;
     @Column(name = "isactive")
     private boolean isActive;
-    @ManyToOne
     @JoinColumn(name = "usr")
-    private User usr;
+    private UUID usr;
 }

@@ -32,7 +32,6 @@ public class Campaign {
     private String geolocation;
     @Column(name = "isactive")
     private boolean isActive;
-    @ManyToOne
     @JoinColumn(name = "advertiser")
-    private Advertiser advertiser;
+    private UUID advertiser;
 }
