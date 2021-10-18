@@ -62,19 +62,21 @@ public class AdvertiserServiceImpl implements AdvertiserService {
     /**
      * The method get all advertisers with all information about it.
      *
-     * @return list of advertisers.
+     * @return list of active advertisers.
      */
     @Override
     public List<Advertiser> getAllAdvertisers() {
         List<Advertiser> result = advertiserRepository.findAll();
+        result.removeIf(advertiser -> !advertiser.getIsActive());
         log.info("IN getAllAdvertisers - {} advertisers found", result.size());
         return result;
     }
+
     /**
      * This method update advertiser.
      *
-     * @param advId This is advertiser's id which needed to update.
-     * @param advertiser   This is updated advertiser.
+     * @param advId      This is advertiser's id which needed to update.
+     * @param advertiser This is updated advertiser.
      * @return Updated advertiser.
      */
     @Override
@@ -84,9 +86,9 @@ public class AdvertiserServiceImpl implements AdvertiserService {
             throw new EntityNotExistException("advertiser is null");
         }
         Advertiser dbAdvertiser = advertiserRepository.findAdvertiserById(advId);
-        if (dbAdvertiser == null){
+        if (dbAdvertiser == null) {
             log.error("IN updateAdvertiser - no advertiser found by id: {}", advId);
-            throw new EntityNotFoundException( "advertiser is null");
+            throw new EntityNotFoundException("advertiser is null");
         }
         dbAdvertiser.setName(advertiser.getName());
         dbAdvertiser.setDescription(advertiser.getDescription());

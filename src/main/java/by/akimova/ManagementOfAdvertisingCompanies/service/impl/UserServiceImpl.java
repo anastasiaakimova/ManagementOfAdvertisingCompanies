@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User user) throws NotFreeUsernameException {
         Optional mailUser = userRepository.findByMail(user.getMail());
-        if (mailUser.isPresent()){
+        if (mailUser.isPresent()) {
             throw new NotFreeUsernameException("This username is already taken");
         }
         user.setId(UUID.randomUUID());
@@ -72,11 +72,12 @@ public class UserServiceImpl implements UserService {
     /**
      * The method get all users with all information about it.
      *
-     * @return list of users.
+     * @return list of active users.
      */
     @Override
     public List<User> getAllUsers() {
         List<User> users = userRepository.findAll();
+        users.removeIf(user -> !user.getIsActive());
         log.info("IN getAllUsers - {} users found", users.size());
         return users;
     }
@@ -85,7 +86,7 @@ public class UserServiceImpl implements UserService {
      * This method update user.
      *
      * @param usrId This is user's id which needed to update.
-     * @param user   This is updated user.
+     * @param user  This is updated user.
      * @return Updated user.
      */
     @Override
@@ -128,7 +129,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getByMail(String mail) throws EntityNotFoundException {
         Optional<User> user = userRepository.findByMail(mail);
-        if (!user.isPresent()){
+        if (!user.isPresent()) {
             log.error("IN findByMail - user not found by mail: {}", mail);
             throw new EntityNotFoundException("User doesn't exists");
         }

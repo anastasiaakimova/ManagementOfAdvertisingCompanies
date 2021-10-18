@@ -62,7 +62,7 @@ public class UserController {
     /**
      * The method add new user.
      *
-     * @param user This is item with its information and body.
+     * @param user This is user with its information and body.
      * @return response with body of created user and status ok.
      */
     @PostMapping
@@ -96,7 +96,7 @@ public class UserController {
     }
 
     /**
-     * The method update item.
+     * The method update user.
      *
      * @param id   This is user's id which should be updated.
      * @param user This is new body for user which should be updated.
