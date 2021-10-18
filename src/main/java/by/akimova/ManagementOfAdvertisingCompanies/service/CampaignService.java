@@ -5,6 +5,7 @@ import by.akimova.ManagementOfAdvertisingCompanies.exception.EntityNotFoundExcep
 import by.akimova.ManagementOfAdvertisingCompanies.model.Campaign;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -18,7 +19,7 @@ public interface CampaignService {
 
     Campaign getById(UUID campId) throws  EntityNotExistException, EntityNotFoundException;
 
-    List<Campaign> getAllCampaigns();
+    List<Campaign> getAllCampaigns(Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
 
     Campaign updateCampaign(UUID campId, Campaign campaign) throws EntityNotFoundException, EntityNotExistException;
 

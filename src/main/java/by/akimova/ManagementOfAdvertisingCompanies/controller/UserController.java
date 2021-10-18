@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -33,8 +34,12 @@ public class UserController {
      * @return ResponseEntity with list of users and status ok.
      */
     @GetMapping
-    ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    ResponseEntity<List<User>> getAllUsers(
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size,
+            @RequestParam Optional<String> sortBy
+    ) {
+        return ResponseEntity.ok(userService.getAllUsers(page, size, sortBy));
     }
 
     /**

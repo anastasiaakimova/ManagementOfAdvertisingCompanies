@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -33,8 +34,10 @@ public class CampaignController {
      * @return ResponseEntity with list of campaigns and status ok.
      */
     @GetMapping
-    ResponseEntity<List<Campaign>> getAllCampaigns() {
-        return ResponseEntity.ok(campaignService.getAllCampaigns());
+    ResponseEntity<List<Campaign>> getAllCampaigns( @RequestParam Optional<Integer> page,
+                                                    @RequestParam Optional<Integer> size,
+                                                    @RequestParam Optional<String> sortBy) {
+        return ResponseEntity.ok(campaignService.getAllCampaigns(page, size, sortBy));
     }
 
     /**

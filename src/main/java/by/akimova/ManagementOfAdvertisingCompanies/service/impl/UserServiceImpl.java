@@ -7,12 +7,15 @@ import by.akimova.ManagementOfAdvertisingCompanies.repository.UserRepository;
 import by.akimova.ManagementOfAdvertisingCompanies.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * The class is implementation of user's business logic.
@@ -75,9 +78,15 @@ public class UserServiceImpl implements UserService {
      * @return list of active users.
      */
     @Override
-    public List<User> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        users.removeIf(user -> !user.getIsActive());
+    public List<User> getAllUsers(Optional<Integer> page,
+                                  Optional<Integer> size,
+                                  Optional<String> sortBy) {
+        List<User> users = userRepository.findAll(PageRequest.of(page.orElse(0),
+                        size.orElse(userRepository.findAll().size()),
+                        Sort.Direction.ASC, sortBy.orElse("id")))
+                .stream()
+                .filter((User::getIsActive))
+                .collect(Collectors.toList());
         log.info("IN getAllUsers - {} users found", users.size());
         return users;
     }

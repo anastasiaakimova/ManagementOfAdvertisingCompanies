@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -32,8 +33,10 @@ public class AdvertiserController {
      * @return ResponseEntity with list of advertisers and status ok.
      */
     @GetMapping
-    ResponseEntity<List<Advertiser>> getAllAdvertisers() {
-        return ResponseEntity.ok(advertiserService.getAllAdvertisers());
+    ResponseEntity<List<Advertiser>> getAllAdvertisers( @RequestParam Optional<Integer> page,
+                                                        @RequestParam Optional<Integer> size,
+                                                        @RequestParam Optional<String> sortBy) {
+        return ResponseEntity.ok(advertiserService.getAllAdvertisers(page, size, sortBy));
     }
 
     /**

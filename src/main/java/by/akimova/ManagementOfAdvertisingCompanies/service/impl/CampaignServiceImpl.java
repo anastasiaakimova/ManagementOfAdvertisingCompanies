@@ -7,10 +7,14 @@ import by.akimova.ManagementOfAdvertisingCompanies.repository.CampaignRepository
 import by.akimova.ManagementOfAdvertisingCompanies.service.CampaignService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * The class is implementation of user's business logic.
@@ -68,9 +72,15 @@ public class CampaignServiceImpl implements CampaignService {
      * @return list of active campaigns.
      */
     @Override
-    public List<Campaign> getAllCampaigns() {
-        List<Campaign> result = campaignRepository.findAll();
-        result.removeIf(campaign -> !campaign.getIsActive());
+    public List<Campaign> getAllCampaigns(Optional<Integer> page,
+                                          Optional<Integer> size,
+                                          Optional<String> sortBy) {
+        List<Campaign> result = campaignRepository.findAll(PageRequest.of(page.orElse(0),
+                        size.orElse(campaignRepository.findAll().size()),
+                        Sort.Direction.ASC, sortBy.orElse("id")))
+                .stream()
+                .filter(Campaign::getIsActive)
+                .collect(Collectors.toList());
         log.info("IN getAllCampaigns - {} campaigns found", result.size());
         return result;
     }

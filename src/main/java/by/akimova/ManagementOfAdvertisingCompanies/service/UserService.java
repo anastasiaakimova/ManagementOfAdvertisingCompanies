@@ -22,7 +22,7 @@ public interface UserService {
 
     User getById(UUID usrId) throws EntityNotFoundException, NotValidUsernameException;
 
-    List<User> getAllUsers();
+    List<User> getAllUsers(Optional<Integer> page, Optional<Integer> size,Optional<String> sortBy);
 
     User updateUser(UUID usrId, User user) throws EntityNotFoundException, NotValidUsernameException;
 

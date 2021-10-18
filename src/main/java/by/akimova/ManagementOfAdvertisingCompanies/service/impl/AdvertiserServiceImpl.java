@@ -6,11 +6,15 @@ import by.akimova.ManagementOfAdvertisingCompanies.repository.AdvertiserReposito
 import by.akimova.ManagementOfAdvertisingCompanies.service.AdvertiserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * The class is implementation of  {@link AdvertiserService} interface.
@@ -65,9 +69,15 @@ public class AdvertiserServiceImpl implements AdvertiserService {
      * @return list of active advertisers.
      */
     @Override
-    public List<Advertiser> getAllAdvertisers() {
-        List<Advertiser> result = advertiserRepository.findAll();
-        result.removeIf(advertiser -> !advertiser.getIsActive());
+    public List<Advertiser> getAllAdvertisers(Optional<Integer> page,
+                                              Optional<Integer> size,
+                                              Optional<String> sortBy) {
+        List<Advertiser> result = advertiserRepository.findAll(PageRequest.of(page.orElse(0),
+                        size.orElse(advertiserRepository.findAll().size()),
+                        Sort.Direction.ASC, sortBy.orElse("id")))
+                .stream()
+                .filter(Advertiser::getIsActive)
+                .collect(Collectors.toList());
         log.info("IN getAllAdvertisers - {} advertisers found", result.size());
         return result;
     }

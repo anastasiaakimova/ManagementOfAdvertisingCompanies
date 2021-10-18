@@ -5,6 +5,7 @@ import by.akimova.ManagementOfAdvertisingCompanies.exception.EntityNotFoundExcep
 import by.akimova.ManagementOfAdvertisingCompanies.model.Advertiser;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -18,7 +19,7 @@ public interface AdvertiserService {
 
     Advertiser getById(UUID advId) throws EntityNotFoundException, EntityNotExistException;
 
-    List<Advertiser> getAllAdvertisers();
+    List<Advertiser> getAllAdvertisers(Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
 
     Advertiser updateAdvertiser(UUID advId, Advertiser advertiser) throws EntityNotFoundException, EntityNotExistException;
 
