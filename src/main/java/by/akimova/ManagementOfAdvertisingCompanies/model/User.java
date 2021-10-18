@@ -29,5 +29,7 @@ public class User {
     @Column(name = "role")
     private Role role;
     @Column(name = "isactive")
-    private boolean isActive;
+    private Boolean isActive;
+
+
 }

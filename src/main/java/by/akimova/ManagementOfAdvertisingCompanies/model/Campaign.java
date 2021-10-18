@@ -31,7 +31,7 @@ public class Campaign {
     @Column(name = "geolocation")
     private String geolocation;
     @Column(name = "isactive")
-    private boolean isActive;
+    private Boolean isActive;
     @JoinColumn(name = "advertiser")
     private UUID advertiser;
 }

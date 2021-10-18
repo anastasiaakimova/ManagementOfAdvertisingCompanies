@@ -23,7 +23,7 @@ public class Advertiser {
     @Column(name = "description")
     private String description;
     @Column(name = "isactive")
-    private boolean isActive;
+    private Boolean isActive;
     @JoinColumn(name = "usr")
     private UUID usr;
 }
