@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -103,6 +104,7 @@ public class AdvertiserController {
      * @return response status no_content.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<?> deleteAdvertiser(@PathVariable(value = "id") UUID id) {
         advertiserService.deleteAdvertiserById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

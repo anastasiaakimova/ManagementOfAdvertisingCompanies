@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -34,6 +35,7 @@ public class UserController {
      * @return ResponseEntity with list of users and status ok.
      */
     @GetMapping
+    @PreAuthorize("hasAuthority('user:write')")
     ResponseEntity<List<User>> getAllUsers(
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size,
@@ -50,6 +52,7 @@ public class UserController {
      */
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('user:write')")
     ResponseEntity<?> getUserById(@PathVariable(value = "id") UUID id) {
         User user;
         try {
@@ -71,6 +74,7 @@ public class UserController {
      * @return response with body of created user and status ok.
      */
     @PostMapping
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         User savedUser;
         try {
@@ -88,6 +92,7 @@ public class UserController {
      * @return ResponseEntity with found user and status ok.
      */
     @GetMapping("mail/{mail}")
+    @PreAuthorize("hasAuthority('user:write')")
     ResponseEntity<?> getUserByMail(@PathVariable(value = "mail") String mail) throws EntityNotFoundException {
         User user;
         try {
@@ -129,6 +134,7 @@ public class UserController {
      * @return response status no_content.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<?> deleteUser(@PathVariable(value = "id") UUID id) {
         userService.deleteUserById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

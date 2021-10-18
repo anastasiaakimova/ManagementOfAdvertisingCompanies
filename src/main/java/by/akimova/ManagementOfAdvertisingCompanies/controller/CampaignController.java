@@ -2,13 +2,13 @@ package by.akimova.ManagementOfAdvertisingCompanies.controller;
 
 import by.akimova.ManagementOfAdvertisingCompanies.exception.EntityNotExistException;
 import by.akimova.ManagementOfAdvertisingCompanies.exception.EntityNotFoundException;
-import by.akimova.ManagementOfAdvertisingCompanies.model.Advertiser;
 import by.akimova.ManagementOfAdvertisingCompanies.model.Campaign;
 import by.akimova.ManagementOfAdvertisingCompanies.service.CampaignService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,9 +34,9 @@ public class CampaignController {
      * @return ResponseEntity with list of campaigns and status ok.
      */
     @GetMapping
-    ResponseEntity<List<Campaign>> getAllCampaigns( @RequestParam Optional<Integer> page,
-                                                    @RequestParam Optional<Integer> size,
-                                                    @RequestParam Optional<String> sortBy) {
+    ResponseEntity<List<Campaign>> getAllCampaigns(@RequestParam Optional<Integer> page,
+                                                   @RequestParam Optional<Integer> size,
+                                                   @RequestParam Optional<String> sortBy) {
         return ResponseEntity.ok(campaignService.getAllCampaigns(page, size, sortBy));
     }
 
@@ -78,7 +78,7 @@ public class CampaignController {
     /**
      * The method update campaign.
      *
-     * @param id         This is campaign's id which should be updated.
+     * @param id       This is campaign's id which should be updated.
      * @param campaign This is new body for campaign which should be updated.
      * @return response with body of updated campaign and status ok.
      */
@@ -104,6 +104,7 @@ public class CampaignController {
      * @return response status no_content.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<?> deleteCampaign(@PathVariable(value = "id") UUID id) {
         campaignService.deleteCampaignById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
