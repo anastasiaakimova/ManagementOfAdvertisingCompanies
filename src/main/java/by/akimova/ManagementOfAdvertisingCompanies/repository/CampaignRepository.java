@@ -14,7 +14,6 @@ import java.util.UUID;
  */
 @Repository
 public interface CampaignRepository extends JpaRepository<Campaign, String> {
-    void deleteCampaignById(UUID campId);
 
     Campaign findCampaignById(UUID campId);
 }

@@ -16,8 +16,6 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
-    void deleteUserById(UUID usrId);
-
     Optional<User> findByMail(String mail);
 
     User findUserById(UUID usrId);
