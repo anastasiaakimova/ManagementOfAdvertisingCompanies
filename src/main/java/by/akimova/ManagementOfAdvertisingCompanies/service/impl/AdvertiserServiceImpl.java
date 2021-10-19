@@ -110,12 +110,16 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 
     /**
      * This method delete advertiser.
+     * The parameter "isActive" turn false and this means that advertiser deleted.
      *
      * @param advId This is advertiser's id which needed to delete.
      */
     @Override
     public void deleteAdvertiserById(UUID advId) {
-        advertiserRepository.deleteAdvertiserById(advId);
+        Advertiser advertiser = advertiserRepository.findAdvertiserById(advId);
+        advertiser.setIsActive(Boolean.FALSE);
+        advertiserRepository.save(advertiser);
+
         log.info("IN deleteAdvertiserById - advertiser with id: {} successfully deleted", advId);
     }
 }
