@@ -41,11 +41,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User user) throws NotFreeUsernameException {
         Optional mailUser = userRepository.findByMail(user.getMail());
+
         if (mailUser.isPresent()) {
             throw new NotFreeUsernameException("This username is already taken");
         }
+
         user.setId(UUID.randomUUID());
         user.setPassword(user.getPassword());
+        user.setIsActive(Boolean.TRUE);
         log.info("IN saveUser - new user with id: {} successfully added", user.getId());
         return userRepository.save(user);
     }
@@ -58,16 +61,19 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getById(UUID usrId) throws EntityNotFoundException, NotValidUsernameException {
+
         if (usrId == null) {
             log.error("IN getById - userId is null ");
             throw new NotValidUsernameException("userId is null");
         }
+
         User user = userRepository.findUserById(usrId);
 
         if (user == null) {
             log.error("IN getById -  no user found by id {}", usrId);
             throw new EntityNotFoundException("user not found");
         }
+
         log.info("IN getById - user: {} found by id: {}", user, usrId);
         return user;
     }
@@ -81,12 +87,14 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers(Optional<Integer> page,
                                   Optional<Integer> size,
                                   Optional<String> sortBy) {
+
         List<User> users = userRepository.findAll(PageRequest.of(page.orElse(0),
                         size.orElse(userRepository.findAll().size()),
                         Sort.Direction.ASC, sortBy.orElse("id")))
                 .stream()
                 .filter((User::getIsActive))
                 .collect(Collectors.toList());
+
         log.info("IN getAllUsers - {} users found", users.size());
         return users;
     }
@@ -100,15 +108,19 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User updateUser(UUID usrId, User user) throws EntityNotFoundException, NotValidUsernameException {
+
         if (user == null) {
             log.error("IN updateUser - user is null");
             throw new NotValidUsernameException("user is null");
         }
+
         User dbUser = userRepository.findUserById(usrId);
+
         if (dbUser == null) {
             log.error("IN updateUser - user not found by id {}", usrId);
             throw new EntityNotFoundException("user not found");
         }
+
         dbUser.setName(user.getName());
         dbUser.setMail(user.getMail());
         dbUser.setPassword(user.getPassword());
@@ -120,12 +132,16 @@ public class UserServiceImpl implements UserService {
 
     /**
      * This method delete user.
+     * The parameter "isActive" turn false and this means that user deleted.
      *
      * @param usrId This is user's id which needed to delete.
      */
     @Override
     public void deleteUserById(UUID usrId) {
-        userRepository.deleteUserById(usrId);
+       User user = userRepository.findUserById(usrId);
+       user.setIsActive(Boolean.FALSE);
+       userRepository.save(user);
+
         log.info("IN deleteUserById - user with id: {} successfully deleted", usrId);
     }
 
@@ -138,10 +154,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getByMail(String mail) throws EntityNotFoundException {
         Optional<User> user = userRepository.findByMail(mail);
+
         if (!user.isPresent()) {
             log.error("IN findByMail - user not found by mail: {}", mail);
             throw new EntityNotFoundException("User doesn't exists");
         }
+
         log.info("IN findByMail - user found by mail: {}", mail);
         return user;
     }

@@ -40,6 +40,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Campaign saveCampaign(Campaign campaign) {
         campaign.setId(UUID.randomUUID());
+        campaign.setIsActive(Boolean.TRUE);
         log.info("IN saveCampaign - new campaign with id: {} successfully added", campaign.getId());
         return campaignRepository.save(campaign);
     }
@@ -117,12 +118,16 @@ public class CampaignServiceImpl implements CampaignService {
 
     /**
      * This method delete campaign.
+     * The parameter "isActive" turn false and this means that campaign deleted.
      *
      * @param campId This is campaign's id which needed to delete.
      */
     @Override
     public void deleteCampaignById(UUID campId) {
-        campaignRepository.deleteCampaignById(campId);
+        Campaign campaign = campaignRepository.findCampaignById(campId);
+        campaign.setIsActive(Boolean.FALSE);
+        campaignRepository.save(campaign);
+
         log.info("IN deleteUserById - campaign with id: {} successfully deleted", campId);
     }
 }
