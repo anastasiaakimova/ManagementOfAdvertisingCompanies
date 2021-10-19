@@ -14,7 +14,6 @@ import java.util.UUID;
  */
 @Repository
 public interface AdvertiserRepository extends JpaRepository<Advertiser, String> {
-    void deleteAdvertiserById(UUID advId);
 
     Advertiser findAdvertiserById(UUID advId);
 }
