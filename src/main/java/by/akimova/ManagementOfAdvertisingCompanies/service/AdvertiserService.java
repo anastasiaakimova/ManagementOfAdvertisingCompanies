@@ -2,6 +2,7 @@ package by.akimova.ManagementOfAdvertisingCompanies.service;
 
 import by.akimova.ManagementOfAdvertisingCompanies.exception.EntityNotExistException;
 import by.akimova.ManagementOfAdvertisingCompanies.exception.EntityNotFoundException;
+import by.akimova.ManagementOfAdvertisingCompanies.exception.NotAccessException;
 import by.akimova.ManagementOfAdvertisingCompanies.model.Advertiser;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface AdvertiserService {
 
     List<Advertiser> getAllAdvertisers(Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
 
-    Advertiser updateAdvertiser(UUID advId, Advertiser advertiser) throws EntityNotFoundException, EntityNotExistException;
+    Advertiser updateAdvertiser(UUID advId, Advertiser advertiser) throws EntityNotFoundException, EntityNotExistException, NotAccessException;
 
-    void deleteAdvertiserById(UUID advId);
+    void deleteAdvertiserById(UUID advId) throws NotAccessException;
 }

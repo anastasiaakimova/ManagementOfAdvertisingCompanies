@@ -2,6 +2,7 @@ package by.akimova.ManagementOfAdvertisingCompanies.controller;
 
 import by.akimova.ManagementOfAdvertisingCompanies.exception.EntityNotExistException;
 import by.akimova.ManagementOfAdvertisingCompanies.exception.EntityNotFoundException;
+import by.akimova.ManagementOfAdvertisingCompanies.exception.NotAccessException;
 import by.akimova.ManagementOfAdvertisingCompanies.model.Advertiser;
 import by.akimova.ManagementOfAdvertisingCompanies.service.AdvertiserService;
 import lombok.AllArgsConstructor;
@@ -93,6 +94,9 @@ public class AdvertiserController {
         } catch (EntityNotFoundException e) {
             log.error("IN AdvertiserController updateAdvertiser - advertiser by id {} not found", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (NotAccessException e) {
+            log.error("IN AdvertiserController updateAdvertiser - advertiser can't do this");
+            return new ResponseEntity<>("This user can't update this cart", HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(updatedAdvertiser, HttpStatus.OK);
     }
@@ -106,7 +110,14 @@ public class AdvertiserController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<?> deleteAdvertiser(@PathVariable(value = "id") UUID id) {
-        advertiserService.deleteAdvertiserById(id);
+
+       try {
+           advertiserService.deleteAdvertiserById(id);
+       }
+        catch (NotAccessException e) {
+            log.error("IN AdvertiserController deleteAdvertiser - user can't do this");
+            return new ResponseEntity<>("This user can't delete this cart",HttpStatus.FORBIDDEN);
+        }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

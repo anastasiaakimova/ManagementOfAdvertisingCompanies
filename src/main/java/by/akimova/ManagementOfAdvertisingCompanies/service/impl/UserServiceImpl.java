@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     /**
      * The method add new user.
@@ -47,8 +49,9 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setId(UUID.randomUUID());
-        user.setPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setIsActive(Boolean.TRUE);
+
         log.info("IN saveUser - new user with id: {} successfully added", user.getId());
         return userRepository.save(user);
     }
@@ -123,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
         dbUser.setName(user.getName());
         dbUser.setMail(user.getMail());
-        dbUser.setPassword(user.getPassword());
+        dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
         dbUser.setRole(user.getRole());
 
         log.info("IN updateUser - user with id: {} successfully edited ", usrId);
