@@ -40,6 +40,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Campaign saveCampaign(Campaign campaign) {
         campaign.setId(UUID.randomUUID());
+        campaign.setIsActive(Boolean.TRUE);
         log.info("IN saveCampaign - new campaign with id: {} successfully added", campaign.getId());
         return campaignRepository.save(campaign);
     }

@@ -38,6 +38,7 @@ public class AdvertiserServiceImpl implements AdvertiserService {
     @Override
     public Advertiser saveAdvertiser(Advertiser advertiser) {
         advertiser.setId(UUID.randomUUID());
+        advertiser.setIsActive(Boolean.TRUE);
         log.info("IN saveAdvertiser - new advertiser with id: {} successfully added", advertiser.getId());
         return advertiserRepository.save(advertiser);
     }

@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
         user.setId(UUID.randomUUID());
         user.setPassword(user.getPassword());
+        user.setIsActive(Boolean.TRUE);
         log.info("IN saveUser - new user with id: {} successfully added", user.getId());
         return userRepository.save(user);
     }
