@@ -11,9 +11,9 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
 
   #flyway
-  flyway:
-    url: jdbc:postgresql://localhost:5432/AdvertisingCompanies
-    user: postgres
-    password: 1234
-    schemas: public
-    locations: filesystem:db/migration
+flyway:
+  url: jdbc:postgresql://localhost:5432/AdvertisingCompanies
+  user: postgres
+  password: 1234
+  schemas: public
+  locations: filesystem:db/migration
