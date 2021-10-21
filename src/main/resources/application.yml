@@ -1,0 +1,26 @@
+#Database
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/AdvertisingCompanies
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+
+  #flyway
+flyway:
+  url: jdbc:postgresql://localhost:5432/AdvertisingCompanies
+  user: postgres
+  password: 1234
+  schemas: public
+  locations:
+  classpath: db/migration
+
+  #jwt
+jwt:
+  header: Authorization
+  secret: key
+  expiration: 604800
